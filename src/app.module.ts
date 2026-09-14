@@ -16,6 +16,7 @@ import { AddressModule } from './apps/address/address.module';
 import { CategoryModule } from './apps/category/category.module';
 import { ProductModule } from './apps/product/product.module';
 import { ProductImageModule } from './apps/product-image/product-image.module';
+import { EmailModule } from './apps/email/email.module';
 
 const envFile = process.env.NODE_ENV === 'production' ? [".env.prod", '.env'] : [".env.dev", '.env'];
 
@@ -30,7 +31,7 @@ const envFile = process.env.NODE_ENV === 'production' ? [".env.prod", '.env'] : 
     {
       useClass: TypeOrmConfigService,
     }
-  ), UserModule, AuthModule, AddressModule, CategoryModule, ProductModule, ProductImageModule],
+  ), UserModule, AuthModule, AddressModule, CategoryModule, ProductModule, ProductImageModule, EmailModule],
   providers: [
     {
       provide: APP_GUARD,
