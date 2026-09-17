@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, HttpCode, HttpStatus, Query, Req } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { UserService } from '../user/user.service';
@@ -47,7 +47,8 @@ export class AuthController {
         return this.authService.verifyEmailCustom(token, email);
     }
 
-    async getCurrentUser(req: any) {
+    @Get('me')
+    async getCurrentUser(@Req() req: any) {
         const session = await this.sessionFromRequest(req);
 
         if (!session?.user) {
@@ -60,7 +61,54 @@ export class AuthController {
         }
 
         const fullUser = await this.userService.getUser(session.user.id);
+
+        return {
+            success: true,
+            authenticated: true,
+            user: fullUser ? this.mapUserResponse(fullUser) : session.user,
+        }
     }
+
+    @Get('session')
+    async getSession(@Req() req: any) {
+        const session = await this.sessionFromRequest(req);
+
+        if (!session?.session) {
+            return {
+                success: false,
+                authenticated: false
+            }
+        }
+
+        return {
+            success: true,
+            authenticated: true,
+            session: {
+                token: session.session.token,
+                expiresAt: session.session.expiresAt,
+            },
+            user: session.user,
+        }
+    }
+
+    @Get('check')
+    @HttpCode(HttpStatus.OK)
+    async checkAuth(@Req() req: any) {
+        const session = await this.sessionFromRequest(req);
+
+        if (!session?.user) {
+            return {
+                authenicated: false,
+                user: null,
+            };
+        }
+
+        return {
+            authenticated: true,
+            user: session.user,
+        };
+    }
+
 
 
 }
