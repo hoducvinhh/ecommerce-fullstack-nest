@@ -4,11 +4,15 @@ import { Account } from './entities/account.entity';
 import { Session } from './entities/session.entity';
 import { Verification } from './entities/verification.entity';
 import { SessionAuthService } from './session-auth/session-auth.service';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
+import { UserModule } from '../user/user.module';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Account, Session, Verification])],
-    providers: [SessionAuthService],
-    exports: [SessionAuthService]
+    imports: [TypeOrmModule.forFeature([Account, Session, Verification]), UserModule],
+    providers: [SessionAuthService, AuthService],
+    exports: [SessionAuthService],
+    controllers: [AuthController]
 })
 export class AuthModule {
 
