@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import { apiBadRequest } from 'src/shared/helpers/api-i18n';
 
 @Injectable()
 export class UserService {
@@ -21,7 +22,7 @@ export class UserService {
 
 
         if (!user) {
-            throw new NotFoundException('Không tìm thấy người dùng');
+            apiBadRequest('error.common.userNotFound');
         }
 
         return this.userRepository.update(

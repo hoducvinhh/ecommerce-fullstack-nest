@@ -9,7 +9,7 @@ export function setupSwagger(app: NestExpressApplication): void {
     // }
 
     const swaggerConfig = new DocumentBuilder()
-        .setTitle('Ecommerce API')
+        .setTitle('E-commerce API')
         .setVersion('1.0')
         .addBearerAuth().build();
 

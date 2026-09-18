@@ -1,12 +1,12 @@
 import { Controller, Get, HttpCode, HttpStatus, Query, Req } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { UserService } from '../user/user.service';
 import { SessionAuthService } from './session-auth/session-auth.service';
 import { User } from '../user/entities/user.entity';
 import { plainToInstance } from 'class-transformer';
 import { UserResponseDto } from '../user/dto/user-response.dto';
-import { success } from 'zod';
+import { ResEx } from 'src/swagger/response-example';
 
 @ApiTags('Xác thực (Auth)')
 @Controller('auth')
@@ -40,6 +40,18 @@ export class AuthController {
 
 
     @Get('verify-email')
+    @ApiOperation({
+        summary: 'Xác minh email qua token(query)',
+        operationId: 'auth_verify_email',
+    })
+    @ApiOkResponse(
+        {
+            description: 'Ví dụ phản hồi',
+            schema: {
+                example: ResEx.auth.verifyEmail,
+            }
+        }
+    )
     async verifyEmail(
         @Query('token') token: string,
         @Query("email") email: string,
@@ -48,6 +60,17 @@ export class AuthController {
     }
 
     @Get('me')
+    @ApiOperation({
+        summary: 'Lấy thông tin user hiện tại(Bearer hoặc cookie session',
+        operationId: 'auth_get_me',
+    })
+    @ApiOkResponse({
+        description: 'Ví dụ khi đã đăng nhập: khi không có session trả authenticated: false',
+        schema: {
+            example: ResEx.auth.me
+        },
+    })
+    @ApiBearerAuth()
     async getCurrentUser(@Req() req: any) {
         const session = await this.sessionFromRequest(req);
 
@@ -69,7 +92,20 @@ export class AuthController {
         }
     }
 
+
+
     @Get('session')
+    @ApiOperation({
+        summary: 'Lấy session (token,, ,hết hạn, user',
+        operationId: 'auth_get_session',
+    })
+    @ApiOkResponse({
+        description: 'Ví dụ khi có session',
+        schema: {
+            example: ResEx.auth.session
+        }
+    })
+    @ApiBearerAuth()
     async getSession(@Req() req: any) {
         const session = await this.sessionFromRequest(req);
 
@@ -91,7 +127,19 @@ export class AuthController {
         }
     }
 
+
     @Get('check')
+    @ApiOperation({
+        summary: 'Kiểm tra dã đăng nhập hay chưa',
+        operationId: 'auth_check',
+    })
+    @ApiOkResponse({
+        description: 'Ví dụ phản hồi',
+        schema: {
+            example: ResEx.auth.check
+        }
+    })
+    @ApiBearerAuth()
     @HttpCode(HttpStatus.OK)
     async checkAuth(@Req() req: any) {
         const session = await this.sessionFromRequest(req);

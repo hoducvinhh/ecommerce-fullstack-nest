@@ -4,6 +4,7 @@ import { Verification } from './entities/verification.entity';
 import { Repository } from 'typeorm';
 import { PinoLogger } from 'nestjs-pino';
 import { UserService } from '../user/user.service';
+import { apiBadRequest } from 'src/shared/helpers/api-i18n';
 
 @Injectable()
 export class AuthService {
@@ -31,12 +32,13 @@ export class AuthService {
                 msg: 'auth.verify.tokenNotFound', email
             });
 
-            throw new BadRequestException("Token xác minh không hợp lệ");
+            apiBadRequest('error.auth.verificationFail');
         }
+
         if (record.expiresAt.getTime() < Date.now()) {
             await this.verificationRepository.delete({ id: record.id });
             this.logger.warn({ msg: 'auth.verify.tokenExpired', email });
-            throw new BadRequestException('Token xác minh đã hết hạn');
+            apiBadRequest('error.auth.tokenExpired');
         }
 
         if (record.identifier.toLowerCase() != email.toLowerCase()) {
@@ -46,7 +48,7 @@ export class AuthService {
                 providedEmail: email,
             });
 
-            throw new BadRequestException('Email không khớp với token xác minh');
+            apiBadRequest('error.auth.emailMismatch');
         }
 
         await this.userService.verifyUser(email);
