@@ -6,7 +6,7 @@ import { APP_GUARD, APP_FILTER } from '@nestjs/core';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { validateEnv } from './config/env.validation';
 import { AllExceptionsFilter } from './core/filters/all-exceptions.filter';
-import { CorrelationIdMiddleware } from './shared/middlewares/correlation-id.middlewares';
+import { CorrelationIdMiddleware } from './core/middlewares/correlation-id.middlewares';
 import { allConfigs } from './config/configuration';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './config/database/typeorm-config.service';
