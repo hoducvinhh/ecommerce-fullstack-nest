@@ -98,7 +98,7 @@ export class EmailService {
 
     <p>Nếu bạn không tạo tài khoản này, vui lòng bỏ qua email này.</p>
 
-    <p>Trân trọng,<br>Đội ngũ Ecommerce Store</p>
+    <p>Trân trọng,<br>Đội ngũ E commerce Store</p>
   </div>
 `;
 
@@ -128,7 +128,7 @@ export class EmailService {
     <p>Nếu bạn không yêu cầu đặt lại mật khẩu, vui lòng bỏ qua email này.</p>
     <p><strong>Lưu ý:</strong> Link này sẽ hết hạn sau 1 giờ.</p>
 
-    <p>Trân trọng,<br>Đội ngũ Ecommerce Store</p>
+    <p>Trân trọng,<br>Đội ngũ E commerce Store</p>
   </div>
 `;
 

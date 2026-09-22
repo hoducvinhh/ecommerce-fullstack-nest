@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Verification } from './entities/verification.entity';
 import { Repository } from 'typeorm';
@@ -32,7 +32,7 @@ export class AuthService {
                 msg: 'auth.verify.tokenNotFound', email
             });
 
-            apiBadRequest('error.auth.verificationFail');
+            apiBadRequest('error.auth.verificationFailed');
         }
 
         if (record.expiresAt.getTime() < Date.now()) {
@@ -47,7 +47,6 @@ export class AuthService {
                 tokenEmail: record.identifier,
                 providedEmail: email,
             });
-
             apiBadRequest('error.auth.emailMismatch');
         }
 
